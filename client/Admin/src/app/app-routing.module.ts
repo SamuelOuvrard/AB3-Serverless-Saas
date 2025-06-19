@@ -6,7 +6,7 @@ import { AuthComponent } from './views/auth/auth.component';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'tenants',
     pathMatch: 'full',
   },
   {

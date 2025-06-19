@@ -47,6 +47,13 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./views/users/users.module').then((m) => m.UsersModule),
       },
+      {
+        path: 'documents',
+        loadChildren: () =>
+          import('./views/documents/documents.module').then(
+            (m) => m.DocumentsModule
+          ),
+      },
     ],
   },
   {

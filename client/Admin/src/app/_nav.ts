@@ -5,11 +5,11 @@
 import { INavData } from './models';
 
 export const navItems: INavData[] = [
-  {
-    name: 'Dashboard',
-    url: '/dashboard',
-    icon: 'insights',
-  },
+  // {
+  //   name: 'Dashboard',
+  //   url: '/dashboard',
+  //   icon: 'insights',
+  // },
   {
     name: 'Tenants',
     url: '/tenants',

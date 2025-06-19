@@ -1,13 +1,16 @@
 # Server-specific ignores
 /server/cdk.out/
+/server/cdk/cdk.out/
+/server/cdk/node_modules/
 
 # Angular/Client ignores
 **/node_modules/
-**/.angular/cache/
+**/.angular/
 **/dist/
 **/tmp/
 **/out-tsc/
 **/bazel-out/
+**/package-lock.json
 
 # IDE - VSCode
 .vscode/*
@@ -23,11 +26,6 @@
 *.iws
 *.ipr
 .idea_modules/
-
-# IDE - Eclipse
-.classpath
-.project
-.settings/
 
 # System Files
 .DS_Store
