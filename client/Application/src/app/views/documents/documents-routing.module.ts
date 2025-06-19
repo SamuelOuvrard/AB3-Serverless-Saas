@@ -5,6 +5,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ListComponent } from './list/list.component';
+import { CreateComponent } from './create/create.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,13 @@ const routes: Routes = [
       title: 'Document List',
     },
     component: ListComponent,
+  },
+  {
+    path: 'create',
+    data: {
+      title: 'Create Legal Document',
+    },
+    component: CreateComponent,
   }
 ];
 

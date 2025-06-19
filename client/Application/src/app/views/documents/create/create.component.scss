@@ -1,0 +1,31 @@
+.create-document {
+  padding: 20px;
+  
+  h2 {
+    margin-bottom: 20px;
+  }
+  
+  h3 {
+    margin-bottom: 16px;
+  }
+  
+  .full-width {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  .template-description {
+    margin-top: 8px;
+    margin-bottom: 16px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  mat-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    
+    button {
+      margin-left: 8px;
+    }
+  }
+}

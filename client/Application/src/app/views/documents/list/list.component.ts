@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Document } from '../models/document.interface';
+import { DocumentService } from '../document.service';
 
 @Component({
   selector: 'app-list',
@@ -7,23 +9,28 @@ import { Router } from '@angular/router';
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
-  documentData: any[] = [];
-  isLoading: boolean = false;
-  displayedColumns: string[] = ['name', 'type', 'date'];
+  documentData: Document[] = [];
+  isLoading: boolean = true;
+  displayedColumns: string[] = ['name', 'type', 'date', 'companyName'];
 
-  constructor(private router: Router) {}
+  constructor(
+    private documentService: DocumentService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // This is a placeholder - no API connection for now
-    // Sample data for demonstration
-    this.documentData = [
-      { id: '1', name: 'Sample Document 1', type: 'PDF', date: new Date() },
-      { id: '2', name: 'Sample Document 2', type: 'DOCX', date: new Date() }
-    ];
+    this.loadDocuments();
+  }
+
+  loadDocuments(): void {
+    this.isLoading = true;
+    this.documentService.getDocuments().subscribe(documents => {
+      this.documentData = documents;
+      this.isLoading = false;
+    });
   }
 
   onCreate() {
-    // Placeholder for document creation
-    console.log('Create document clicked');
+    this.router.navigate(['documents', 'create']);
   }
 }

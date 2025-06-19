@@ -1,0 +1,83 @@
+<div class="create-document">
+  <h2>Create Legal Document</h2>
+  
+  <div *ngIf="step === 1" class="template-selection">
+    <h3>Select Document Type</h3>
+    <form [formGroup]="documentForm" (ngSubmit)="onTemplateSelected()">
+      <mat-card>
+        <mat-card-content>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Document Type</mat-label>
+            <mat-select formControlName="templateId">
+              <mat-option *ngFor="let template of documentTemplates" [value]="template.id">
+                {{ template.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="documentForm.get('templateId')?.hasError('required')">
+              Please select a document type
+            </mat-error>
+          </mat-form-field>
+          
+          <div *ngIf="selectedTemplateDescription">
+            <p class="template-description">
+              {{ selectedTemplateDescription }}
+            </p>
+          </div>
+        </mat-card-content>
+        
+        <mat-card-actions>
+          <button mat-button type="button" (click)="goBack()">Cancel</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!documentForm.get('templateId')?.valid">
+            Next
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </div>
+  
+  <div *ngIf="step === 2 && selectedTemplate" class="document-form">
+    <h3>{{ selectedTemplate.name }}</h3>
+    <p>{{ selectedTemplate.description }}</p>
+    
+    <form [formGroup]="documentForm" (ngSubmit)="onSubmit()">
+      <mat-card>
+        <mat-card-content>
+          <ng-container *ngFor="let field of selectedTemplate.fields">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ field.label }}</mat-label>
+              
+              <ng-container [ngSwitch]="field.type">
+                <input *ngSwitchCase="'text'" matInput [formControlName]="field.key">
+                <input *ngSwitchCase="'email'" matInput [formControlName]="field.key" type="email">
+                <input *ngSwitchCase="'number'" matInput [formControlName]="field.key" type="number">
+                
+                <ng-container *ngSwitchCase="'date'">
+                  <input matInput [formControlName]="field.key" [matDatepicker]="picker">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </ng-container>
+                
+                <mat-select *ngSwitchCase="'select'" [formControlName]="field.key">
+                  <mat-option *ngFor="let option of field.options" [value]="option">
+                    {{ option }}
+                  </mat-option>
+                </mat-select>
+              </ng-container>
+              
+              <mat-error *ngIf="documentForm.get(field.key)?.invalid && documentForm.get(field.key)?.touched">
+                {{ field.label }} is required
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
+        </mat-card-content>
+        
+        <mat-card-actions>
+          <button mat-button type="button" (click)="goBack()">Back</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="documentForm.invalid">
+            Create Document
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </div>
+</div>
