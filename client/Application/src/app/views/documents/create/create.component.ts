@@ -15,6 +15,8 @@ export class CreateComponent implements OnInit {
   selectedTemplateDescription = '';
   documentForm: FormGroup;
   step = 1;
+  isSubmitting = false;
+  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
@@ -60,6 +62,9 @@ export class CreateComponent implements OnInit {
 
   onSubmit(): void {
     if (this.documentForm.valid && this.selectedTemplate) {
+      this.isSubmitting = true;
+      this.errorMessage = '';
+      
       const formData = this.documentForm.value;
       const document = {
         name: `${this.selectedTemplate.name} - ${formData.companyName || 'New Document'}`,
@@ -69,8 +74,19 @@ export class CreateComponent implements OnInit {
         additionalFields: { ...formData }
       };
       
-      this.documentService.createDocument(document).subscribe(() => {
-        this.router.navigate(['/documents']);
+      console.log('Submitting document:', document);
+      
+      this.documentService.createDocument(document).subscribe({
+        next: (response) => {
+          console.log('Document created successfully:', response);
+          this.isSubmitting = false;
+          this.router.navigate(['/documents']);
+        },
+        error: (error) => {
+          console.error('Error creating document:', error);
+          this.errorMessage = 'Failed to create document. Please try again.';
+          this.isSubmitting = false;
+        }
       });
     }
   }

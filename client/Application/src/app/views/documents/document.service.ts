@@ -1,11 +1,20 @@
+/*
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: MIT-0
+ */
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Document, DocumentTemplate } from './models/document.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentService {
+  constructor(private http: HttpClient) {}
+  baseUrl = `${localStorage.getItem('apiGatewayUrl')}/documents`;
+  
   private documentTemplates: DocumentTemplate[] = [
     {
       id: 'private-stock',
@@ -38,8 +47,6 @@ export class DocumentService {
     { id: '2', name: 'Sample Document 2', type: 'DOCX', date: new Date(), companyName: 'XYZ Inc' }
   ];
 
-  constructor() { }
-
   getDocumentTemplates(): Observable<DocumentTemplate[]> {
     return of(this.documentTemplates);
   }
@@ -54,12 +61,7 @@ export class DocumentService {
   }
 
   createDocument(document: Document): Observable<Document> {
-    const newDocument = {
-      ...document,
-      id: Math.random().toString(36).substring(2, 9),
-      date: new Date()
-    };
-    this.documents.push(newDocument);
-    return of(newDocument);
+    console.log('Sending document to API:', document);
+    return this.http.post<Document>(`${this.baseUrl}`, document);
   }
 }
