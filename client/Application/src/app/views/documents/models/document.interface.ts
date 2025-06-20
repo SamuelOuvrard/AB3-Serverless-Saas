@@ -5,6 +5,8 @@ export interface Document {
   date: Date;
   companyName: string;
   additionalFields?: Record<string, any>;
+  status?: 'processing' | 'completed' | 'error';
+  url?: string;
 }
 
 export interface DocumentTemplate {

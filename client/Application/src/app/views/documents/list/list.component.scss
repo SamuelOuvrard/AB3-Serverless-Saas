@@ -14,4 +14,43 @@
   table {
     width: 100%;
   }
+
+  .document-link {
+    color: #1976d2;
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .status-processing {
+    color: #ff9800;
+    display: flex;
+    align-items: center;
+    
+    mat-icon {
+      margin-right: 5px;
+    }
+  }
+  
+  .status-completed {
+    color: #4caf50;
+    display: flex;
+    align-items: center;
+    
+    mat-icon {
+      margin-right: 5px;
+    }
+  }
+  
+  .status-error {
+    color: #f44336;
+    display: flex;
+    align-items: center;
+    
+    mat-icon {
+      margin-right: 5px;
+    }
+  }
 }
