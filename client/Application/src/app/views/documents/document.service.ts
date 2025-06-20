@@ -4,8 +4,7 @@
  */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 import { Document, DocumentTemplate } from './models/document.interface';
 
 @Injectable({
@@ -42,14 +41,6 @@ export class DocumentService {
     }
   ];
 
-  private documents: Document[] = [
-    { id: '1', name: 'Sample Document 1', type: 'PDF', date: new Date(), companyName: 'ABC Corp', status: 'completed' },
-    { id: '2', name: 'Sample Document 2', type: 'DOCX', date: new Date(), companyName: 'XYZ Inc', status: 'completed' }
-  ];
-  
-  // Create a BehaviorSubject to track document changes
-  private documentsSubject = new BehaviorSubject<Document[]>(this.documents);
-
   getDocumentTemplates(): Observable<DocumentTemplate[]> {
     return of(this.documentTemplates);
   }
@@ -59,60 +50,11 @@ export class DocumentService {
     return of(template);
   }
 
-  getDocuments(): Observable<Document[]> {
-    return this.documentsSubject.asObservable();
+  fetch(): Observable<Document[]> {
+    return this.http.get<Document[]>(`${this.baseUrl}`);
   }
 
   createDocument(document: Document): Observable<Document> {
-    console.log('Sending document to API:', document);
-    
-    // Create a placeholder document immediately
-    const placeholderDocument: Document = {
-      ...document,
-      id: Math.random().toString(36).substring(2, 9),
-      date: new Date(),
-      status: 'processing'
-    };
-    
-    // Add it to the local array and notify subscribers
-    this.documents.push(placeholderDocument);
-    this.documentsSubject.next([...this.documents]);
-    
-    // Send the request to the API
-    this.http.post<Document>(`${this.baseUrl}`, document)
-      .pipe(
-        catchError(error => {
-          console.error('API Error:', error);
-          // Update the placeholder document status
-          const index = this.documents.findIndex(d => d.id === placeholderDocument.id);
-          if (index !== -1) {
-            this.documents[index] = {
-              ...this.documents[index],
-              status: 'error'
-            };
-            // Notify subscribers of the change
-            this.documentsSubject.next([...this.documents]);
-          }
-          return of(null);
-        })
-      )
-      .subscribe(response => {
-        if (response) {
-          // Update the placeholder document with the real data
-          console.log('API Response:', response);
-          const index = this.documents.findIndex(d => d.id === placeholderDocument.id);
-          if (index !== -1) {
-            this.documents[index] = {
-              ...response,
-              status: 'completed'
-            };
-            // Notify subscribers of the change
-            this.documentsSubject.next([...this.documents]);
-          }
-        }
-      });
-    
-    // Return the placeholder document immediately
-    return of(placeholderDocument);
+    return this.http.post<Document>(`${this.baseUrl}`, document);
   }
 }
