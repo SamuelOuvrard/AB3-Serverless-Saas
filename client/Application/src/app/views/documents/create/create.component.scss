@@ -9,34 +9,56 @@
     margin-bottom: 16px;
   }
   
+  .template-description {
+    margin-top: 16px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
   .full-width {
     width: 100%;
     margin-bottom: 16px;
   }
   
-  .template-description {
-    margin-top: 8px;
-    margin-bottom: 16px;
-    color: rgba(0, 0, 0, 0.6);
+  mat-card {
+    margin-bottom: 20px;
   }
   
   mat-card-actions {
     display: flex;
     justify-content: flex-end;
+    padding: 16px;
     
     button {
       margin-left: 8px;
     }
   }
-
+  
   .error-message {
     color: #f44336;
-    margin: 10px 0;
+    margin: 16px 0;
   }
-
+  
   .spinner {
     display: inline-block;
     margin-right: 8px;
     vertical-align: middle;
+  }
+  
+  // Add a two-column layout for forms with many fields
+  .document-form {
+    mat-card-content {
+      display: flex;
+      flex-wrap: wrap;
+      
+      mat-form-field {
+        width: calc(50% - 16px);
+        margin-right: 16px;
+        
+        @media (max-width: 768px) {
+          width: 100%;
+          margin-right: 0;
+        }
+      }
+    }
   }
 }

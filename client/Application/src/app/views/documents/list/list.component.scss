@@ -15,6 +15,16 @@
     width: 100%;
   }
 
+  .document-table {
+    td.mat-cell, th.mat-header-cell {
+      padding: 16px !important;
+    }
+    
+    tr.mat-row:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+
   .document-link {
     color: #1976d2;
     text-decoration: none;
